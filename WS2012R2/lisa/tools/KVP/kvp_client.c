@@ -45,6 +45,7 @@
 #define HV_KVP_EXCHANGE_MAX_KEY_SIZE     512
 #define HV_KVP_EXCHANGE_MAX_VALUE_SIZE  2048
 
+
 struct kvp_record {
 	__u8 key[HV_KVP_EXCHANGE_MAX_KEY_SIZE];
 	__u8 value[HV_KVP_EXCHANGE_MAX_VALUE_SIZE];
@@ -275,6 +276,9 @@ main(int argc, char *argv[])
 	int pool = 0;
 	char *key, *value;
 
+	char vm_hostname[128] = {0};
+	gethostname(&vm_hostname[0], 128);
+
 	if (argc > 1 && strcmp(argv[1], "append") == 0) { /* Append a key-value */
 		if (argc < 5) {
 			printf("Usage: %s append <pool> <key> <value>\n", argv[0]);
@@ -311,7 +315,7 @@ main(int argc, char *argv[])
 			if (more)
 				printf("More records available\n");
 			for (j = 0; j < num_records; j++)
-				printf("Key: %s; Value: %s\n", my_records[j].key, my_records[j].value);
+			  printf("%s Key: %s; Value: %s\n", &vm_hostname[0], my_records[j].key, my_records[j].value);
 		}
 	}
 }
